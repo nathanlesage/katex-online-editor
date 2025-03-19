@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KaTeX Online Rendering</title>
+  <!-- Include KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+  <!-- Include CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/digitallytailored/classless@latest/classless.min.css">
+  <!-- Overwrite some styles -->
+  <style>
+    textarea {
+      font-family: monospace;
+    }
+  </style>
+
+  <script type="text/javascript">
+    function render () {
+      const text = document.querySelector('#formula')
+      const resultElement = document.querySelector('#result')
+
+      if (text.value.trim() === '') {
+        resultElement.textContent = 'The equation will be rendered here.'
+        return
+      }
+
+      const trust = document.querySelector('#trust-katex').checked
+      const displayMode = document.querySelector('#display-mode').checked
+
+      // Documentation: https://katex.org/docs/options
+      katex.render(text.value, resultElement, {
+        throwOnError: false,
+        displayMode,
+        trust
+      })
+    }
+
+    function changeSize () {
+      const sizeElem = document.querySelector('#size')
+      const resultElement = document.querySelector('#result')
+      resultElement.style.fontSize = parseInt(sizeElem.value, 10) + '%'
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelector('#formula').addEventListener('keyup', render)
+      document.querySelector('#size').addEventListener('change', changeSize)
+      document.querySelector('#apply-changes').addEventListener('click', (event) => {
+        event.preventDefault()
+        render()
+      })
+
+      // Set up
+      render()
+      changeSize()
+    })
+  </script>
+</head>
+<body>
+  <h1>Render KaTeX Equations online</h1>
+  <p>
+    Sometimes all we need is just a way to quickly render a TeX equation into an
+    image (looking at you, Powerpoint). Here you can use
+    <a href="https://katex.org/" target="_blank">KaTeX</a>
+    to do so. Quickly, local, and without ads. Just insert your KaTeX equation
+    below, adjust the size, and take a screenshot with your computer.
+  </p>
+
+  <section>
+    <p>
+      Adjust a few potentially useful options here. Click the button to re-render
+      with these options. The equation size is updated automatically.
+    </p>
+    <form>
+      <div>
+        <label>
+          <input type="checkbox" id="display-mode">
+          Display Mode
+        </label>
+      </div>
+
+      <div>
+        <label>
+          <input type="checkbox" id="trust-katex">
+          Trust Code (loads potentially unsafe resources such as images)
+        </label>
+      </div>
+
+      <div>
+        <button id="apply-changes">Apply options</button>
+      </div>
+
+      <hr>
+
+      <div>
+        <label for="size">Set equation size</label>
+        <select id="size">
+          <option value="100">1&times;</option>
+          <option value="200">2&times;</option>
+          <option value="300">3&times;</option>
+          <option value="400">4&times;</option>
+          <option value="500">5&times;</option>
+          <option value="600">6&times;</option>
+          <option value="700">7&times;</option>
+          <option value="800">8&times;</option>
+          <option value="900">9&times;</option>
+          <option value="1000">10&times;</option>
+        </select>
+      </div>
+    </form>
+  </section>
+
+  <section>
+    <div>
+      <label for="formula"><strong>Insert your KaTeX formula here</strong> (<a href="https://katex.org/docs/supported" target="_blank">Supported functions</a>)</label>
+      <textarea id="formula" placeholder="\text{Outcome} = \beta_0 + \beta_1 + \epsilon"></textarea>
+    </div>
+  </section>
+
+  <section id="result">
+    The equation will be rendered here.
+  </section>
+
+  <footer>
+    <section>
+      &copy; 2025 | <a href="https://www.hendrik-erz.de/" target="_blank">Hendrik Erz</a> | <a href="https://github.com/nathanlesage/katex-render" target="_blank">View Source Code on GitHub</a>
+    </section>
+  </footer>
+</body>
+</html>
